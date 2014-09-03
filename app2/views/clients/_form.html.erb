@@ -1,0 +1,62 @@
+<% if @client.errors.any? %>
+  <div id="error_explanation" class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <h2><%= pluralize(@client.errors.count, "error") %> prohibited this client from being saved:</h2>
+    <ul>
+    <% @client.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+`<%= form_for @client, :html => { :class => 'form-horizontal' } do |f| %>
+  <div class="form-group">
+    <%= f.label :name, :class => 'col-sm-2 control-label' %>
+    <div class="col-sm-4">
+      <%= f.text_field :name, :class=> 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :email, :class => 'col-sm-2 control-label' %>
+    <div class="col-sm-4">
+      <%= f.text_field :email, :class=>'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :source, :class => 'col-sm-2 control-label' %>
+    <div class="col-sm-4">
+      <%= f.collection_select :source, Client::SOURCES, :to_s, :humanize, :class=>'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :rating, :class => 'col-sm-2 control-label' %>
+    <div class="col-sm-4">
+      <div id="star" data-score="<%=@rating%>"></div>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :website, :class => 'col-sm-2 control-label' %>
+    <div class="col-sm-4">
+      <%= f.text_field :website, :class=>'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :company, :class => 'col-sm-2 control-label' %>
+    <div class="col-sm-4">
+      <%= f.text_field :company, :class=>'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :location, :class => 'col-sm-2 control-label' %>
+    <div class="col-sm-4">
+      <%= f.text_field :location, :class=>'form-control' %>
+    </div>
+  </div>
+ <div class="form-group">
+   <div class="col-sm-offset-2 col-sm-10">
+      <%= f.submit nil, :class => 'btn btn-primary' %>
+      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                  clients_path, :class => 'btn' %>
+    </div>
+  </div>
+<% end %>

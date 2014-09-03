@@ -1,0 +1,9 @@
+$("#question-<%= @question.id %>-answers").html('<%= raw escape_javascript(render :partial => "answers/answers", :locals => {:answers => @question.answers}) %>')
+
+<% if params[:type] == "grid" %>
+  $("#grid_view_<%= @question.id %>").attr("class","button");
+  $("#list_view_<%= @question.id %>").attr("class","cancel cancel-list");
+<% else %>
+  $("#grid_view_<%= @question.id %>").attr("class","cancel");
+  $("#list_view_<%= @question.id %>").attr("class","button cancel-list");
+<% end %>

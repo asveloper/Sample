@@ -1,0 +1,50 @@
+<%= form_for([@questionable,@question,@answer]) do |f| %>
+  <% if @answer.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@answer.errors.count, "error") %> prohibited this answer from being saved:</h2>
+      <ul>
+      <% @answer.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div>
+    <% title_length = view_type == "list"  ? 255 : 35 %>
+    <%= f.label :title, "Answer" %>
+    <div class="clear"></div>
+    <div class="form-group">
+      <%= f.text_field :title, :class => "text-field form-control", :maxlength => title_length %>
+    </div>
+  </div>
+
+  <% if @question.questionable_type == "Trivium" %>
+    <%= f.label :correct, "Correct Answer" %>
+    <%= f.check_box :correct, {:class => "form-control", :maxlength => title_length}, true, false %>
+    <div class="clear"></div>
+  <% end %>
+  <%= render :partial => "shared/add_photo", :locals =>{:f => f, :source => @answer} if @answer.question.view != "list" %>
+
+  <% if @question.questionable_type == "Quiz" %>
+    <% @questionable.results.each do |result| %>
+    <div class="row">
+
+      <div class="col-xs-10 form-group">
+        <%= text_field_tag "#{result.id}", result.title, :readonly => true, class: "form-control" %>
+      </div>
+      <div class="col-xs-2">
+        <%= select_tag "answer_results[#{result.id}]", options_for_select(0..5, value_for_association(result)) %>
+      </div>
+    </div>
+    <% end %>
+  <% end %>
+
+  <%= f.hidden_field :question_id %>
+
+  <div class="actions">
+    <%= f.submit value="Create Answer", :class=> "button" %>
+    <div class="trash">
+      <%= link_to '<i class="glyphicon glyphicon-trash icon-larger"></i>'.html_safe, [@questionable, @question, @answer], method: :delete, data: { confirm: 'Are you sure?'} if @answer.id.present? %>
+    </div>
+  </div>
+<% end %>

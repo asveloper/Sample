@@ -1,0 +1,36 @@
+<div class="page-header">
+  <h2>Bonuses and Raises</h2>
+</div>
+<%- model_class = Employee -%>
+<table class="table table-striped sort-table">
+  <thead>
+    <tr>
+      <th><%= sortable 'id','Id'%></th>
+      <th><%= sortable 'name','Name'%></th>
+      <th><%= sortable 'salary','Current Salary'%></th>
+      <th>Last Raise</th>
+      <th>Raise Amount</th>
+      <th>Last Bonus</th>
+      <th> Bonus Amount </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @employees.each do |employee| %>
+      <tr>
+        <td><%= employee.id %></td>
+        <td><%= employee.name %></td>
+        <td><%= employee.salary %></td>
+        <%if employee.salary_increments.last%>
+        <td><%= employee.salary_increments.last.date %></td>
+        <td><%= employee.salary_increments.last.amount %></td>
+        <%else%>
+        <td></td>
+        <td></td>
+        <%end%>
+        <%=raw find_bonus(employee)%>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

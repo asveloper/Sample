@@ -1,0 +1,38 @@
+<div class="row">
+  <ul id="answers" class="grid-calculate">
+    <% answers_count = 0 %>
+    <% @question.answers.each_with_index do |answer, index| %>
+      <label for="answers_answer_for_ques_<%= @question.id %>_<%= answer.id %>" class="result col-md-4 col-sm-4 col-xs-4">
+        <% @answers = params[:answers].collect(&:last) if params[:answers].present? %>
+        <li class="answer question_<%= @question.id %> <%= selected_answer(@answers, answer.id) %> <%= check_correct_answer(answer) %>">
+          <% answers_count += 1 %>
+          <div class="clear"></div>
+          <div class="photo_preview grid-photo ">
+            <%= display_photo(answer) %>
+            <div class="image-credentials">
+              <% if answer.image_credentials.present? && answer.image_credentials.present? %>
+                <%= link_to limit_length(answer.image.title[0..15], 15), answer.image_credentials, :target => "_blank" %>
+              <% else %>
+                <div class="image_title"><%= limit_length(answer.image.title[0..15], 15) if answer.image.present? %></div>
+              <% end %>
+            </div>
+          </div>
+          <div class="clear"></div>
+          <div class="quiz-title grid-title">
+            <%= check_box_tag "answers[answer_for_ques_#{@question.id}]", answer.id, checked=checked_answer(@answers, answer.id) unless not_show_action? %>
+            <%= label_tag "answers[answer_for_ques_#{@question.id}_#{answer.id}]", limit_length(answer.title[0..35],35),:class=>"grid-label grid-des" %>
+          </div>
+          <div class="edit-answer-link">
+            <% if not_show_action? %>
+              <%= link_to '<i class="glyphicon glyphicon-pencil"></i>'.html_safe, "#", :onclick => "bind_new_link(this); return false", "data-href" => edit_polymorphic_path([@questionable,@question,answer], :questionable_id => @question.questionable_id, :questionable_type => @question.questionable_type) %>
+              <span> <%= "Correct Answer" if answer.correct %> </span>
+            <% end %>
+          </div>
+        </li>
+      </label>
+      <% if (index+1)%3 == 0 %>
+        <div class="clear"></div>
+      <% end %>
+    <% end %>
+  </ul>
+</div>

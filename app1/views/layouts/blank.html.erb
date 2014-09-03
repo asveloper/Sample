@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%= stylesheet_link_tag 'application', media: 'all' %>
+    <%= render :partial => 'layouts/js' %>
+    <%= csrf_meta_tags %>
+    <%= yield :head %>
+  </head>
+  <body>
+    <div class="clearfix container">
+      <%= render :partial => 'layouts/messages' %>
+      <%= yield %>
+    </div>
+  </body>
+</html>

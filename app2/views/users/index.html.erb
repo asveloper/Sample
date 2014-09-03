@@ -1,0 +1,34 @@
+<%- model_class = User -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
+</div>
+<%= link_to t('.new', :default => t("helpers.links.users.new")),
+            new_user_path,
+            :class => 'btn btn-primary pull-right' %>
+<table class="table table-striped sort-table">
+  <thead>
+    <tr>
+      <th><%= sortable 'Name' %></th>
+      <th><%= sortable 'Email' %></th>
+      <th><%= sortable 'Role' %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.name %></td>
+        <td><%= link_to user.email, user_path(user) %></td>
+        <td><%= user.role %></td>
+        <td>
+          <%= link_to 'Edit', edit_user_path(user), :class => 'btn btn-mini' %>
+          <%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+

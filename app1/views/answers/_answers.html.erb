@@ -1,0 +1,4 @@
+<%= render :partial => "answers/#{view_type}" %>
+<div class="row-fluid pull-left">
+  <%= link_to '<i class="glyphicon glyphicon-plus"></i> Add New Answer'.html_safe, "#", :class => 'add_new_answer', :onclick => "bind_new_link(this); return false", "data-href" => new_quiz_question_answer_path(@questionable,@question, :answer_type => view_type) if not_show_action? %>
+</div>

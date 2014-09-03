@@ -1,0 +1,62 @@
+<% if @inventory.errors.any? %>
+  <div id="error_explanation" class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <h2><%= pluralize(@inventory.errors.count, "error") %> prohibited this inventory from being saved:</h2>
+    <ul>
+    <% @inventory.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+<%= form_for @inventory, :html => { :class => 'form-horizontal' } do |f| %>
+  <div class="form-group">
+    <%= f.label :name, :class => 'col-sm-2 control-label' %>
+    <div class="col-sm-4">
+      <%= f.text_field :name, :class=>'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :serial, :class => 'col-sm-2 control-label' %>
+    <div class="col-sm-4">
+      <%= f.text_field :serial, :class=>'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :comments, :class => 'col-sm-2 control-label' %>
+    <div class="col-sm-4">
+      <%= f.text_area :comments, rows: 5, :class=>'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :category, :class => 'col-sm-2 control-label' %>
+    <div class="col-sm-4">
+      <%= f.collection_select :category, Inventory::CATEGORIES.sort, :to_s, :humanize, :class=>'form-control'%>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :quantity, :class => 'col-sm-2 control-label' %>
+    <div class="col-sm-4">
+      <%= f.text_field :quantity, :class=>'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :value, :class => 'col-sm-2 control-label' %>
+    <div class="col-sm-4">
+      <%= f.text_field :value, :class=>'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label" for="inventory_employee_id">Owned by</label>
+    <div class="col-sm-4">
+      <%= collection_select(:inventory, :employee_id, Employee.all.order("name asc"), :id, :name, prompt: true) %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= f.submit nil, :class => 'btn btn-primary' %>
+      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                inventories_path, :class => 'btn' %>
+    </div>
+  </div>
+<% end %>

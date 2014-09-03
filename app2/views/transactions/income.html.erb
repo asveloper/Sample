@@ -1,0 +1,56 @@
+<%- model_class = Transaction -%>
+<div class="page-header">
+  <h1>Income - <%=@date.strftime("%B %Y")%></h1>
+</div>
+<div class="right">
+<%= link_to t('.new', :default => t("helpers.links.incomes.new")),
+            new_transaction_path+"?income=true",
+            :class => 'btn btn-primary' %>
+</div>
+<table class="table table-striped sort-table">
+  <thead>
+    <tr>
+      <th><%= sortable model_class.human_attribute_name(:id) %></th>
+      <th><%= sortable model_class.human_attribute_name(:title) %></th>
+      <th><%= sortable "transaction_date", model_class.human_attribute_name(:transaction_date) %></th>
+      <th><%= sortable model_class.human_attribute_name(:amount) %></th>
+      <th><%= sortable "project_name", model_class.human_attribute_name(:project_id) %></th>
+      <th><%= sortable "user_name", model_class.human_attribute_name(:user_id) %></th>
+      <th><%= sortable model_class.human_attribute_name(:verified) %></th>
+      <th><%= sortable model_class.human_attribute_name(:status) %></th>
+      <th><%= sortable model_class.human_attribute_name(:source) %></th>
+      <th><%= sortable "expected_date", model_class.human_attribute_name(:expected_date) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @transactions.each do |transaction| %>
+      <tr>
+        <td><%= link_to transaction.id, transaction_path(transaction) %></td>
+        <td><%= transaction.title %></td>
+        <td><%= transaction.transaction_date %></td>
+        <td><%= transaction.amount %></td>
+        <td><%= transaction.project.blank? ? '' : transaction.project.title %></td>
+        <td><%= transaction.user.blank? ? '' : transaction.user.name %></td>
+        <td><%= transaction.verified %></td>
+        <td><%= transaction.status %></td>
+        <td><%= transaction.source %></td>
+        <td><%= transaction.expected_date %></td>
+        <td>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_transaction_path(transaction,:income => 'true'), :class => 'btn btn-mini' %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      transaction_path(transaction),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<ul class="pager">
+  <li class="previous"><%=link_to 'Previous Month', '/income/'+@date.prev_month.month.to_s + "/" + @date.prev_month.year.to_s %></li>
+  <li class="next"><%=link_to 'Next Month', '/income/'+@date.next_month.month.to_s + "/" + @date.next_month.year.to_s %></li>
+</ul>

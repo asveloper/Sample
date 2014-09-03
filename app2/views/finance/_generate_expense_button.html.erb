@@ -1,0 +1,4 @@
+<%= link_to 'Generate Expenses',
+          '/generate-expenses/'+ @date.month.to_s + '/' + @date.year.to_s,
+          :data => { :confirm => @disable ? false : t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure you want to generate expenses for the displayed Salary Records?')) },
+          :class => "btn #{@disable ? 'btn-default disabled-generate-expense' : 'btn-primary' }"  %>

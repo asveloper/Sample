@@ -1,0 +1,80 @@
+<div class="page-header">
+  <h1>Salary Sheet - <%=@date.strftime("%B %Y")%></h1>
+</div>
+<% if @salary_records.blank? %>
+  No Salary records found for this month. <a href="/generate-salaries/<%=@date.month%>/<%=@date.year%>">Click here</a> to generate them automatically for all employees
+<% else %>
+  <div class="row">
+      <div class="col-lg-8"></div>
+      <div class="col-lg-4">
+      <div class="col-lg-2"></div>
+      <div class="col-lg-5">
+      <div class="generate_expense_button">
+        <%= link_to 'Generate Expenses',
+                  '/generate-expenses/'+ @date.month.to_s + '/' + @date.year.to_s,
+                  :data => { :confirm => @disable ? false : t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure you want to generate expenses for the displayed Salary Records?')) },
+                  :class => "btn #{@disable ? 'btn-default disabled-generate-expense' : 'btn-primary' }"  %>
+      </div>
+      </div>
+      <div class="col-lg-5">
+      <div class=" generate_slips_button">
+        <%= link_to 'Send Salary Slips',
+                  '/send_salary_slips/'+ @date.month.to_s + '/' + @date.year.to_s,
+                  :data => { :confirm => @disable ? false : t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure you want to send salary slips?')) },
+                  :class => "btn #{@disable ? 'btn-default disabled-generate-expense' : 'btn-primary' }"  %>
+      </div>
+      </div>
+    </div>
+  </div>
+  <%- model_class = Transaction -%>
+  <table class="table table-striped sort-table">
+    <thead>
+      <tr>
+        <th><%= sortable_SR "employee_id",'Name',@month.to_s,@year.to_s %></th>
+        <th><%= sortable_SR 'Salary','Salary',@month.to_s,@year.to_s %></th>
+        <% SalaryRecord::SALARY_DISTRUBUTION_NAMES.each do |s| %>
+          <th><%= s.humanize%></th>
+        <% end %>
+        <% SalaryRecord::SALARY_EXTRAS.each do |s| %>
+          <th><%= s.humanize%></th>
+        <% end %>
+        <th><%= sortable_SR 'provident_fund', 'Provident Fund',@month.to_s,@year.to_s %></th>
+        <th><%= sortable_SR 'net_salary', 'Net Salary',@month.to_s,@year.to_s %></th>
+        <th> Paid By </th>
+        <th><%=t '.actions', :default => t("helpers.actions") %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @salary_records.each do |s| %>
+        <tr>
+          <td><%= s.employee.name %></td>
+          <td><%= s.salary %></td>
+          <% SalaryRecord::SALARY_DISTRUBUTION_NAMES.each do |sn| %>
+            <td><%=s.distribution[sn]%></td>
+          <% end %>
+          <% SalaryRecord::SALARY_EXTRAS.each do |sn| %>
+            <td><%=s.distribution[sn]%></td>
+          <% end %>
+          <td><%= s.provident_fund %></td>
+          <td><%= s.net_salary %></td>
+          <% prompt = s.user ? false : "Select"%>
+          <td><%= select_tag 'paid_by', options_from_collection_for_select(User.admins, :id, :name,s.user ? s.user.id : '' ), prompt: prompt ,class: "selectpicker form-control", :onchange => "$.post('/change_paid_by/#{s.id}', {'_method':'put', 'paid_by':this.value , 'month':#{@date.month} , 'year' : #{@date.year}} );"%></td>
+          <td>
+            <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                        edit_salary_record_path(s), :class => 'btn btn-mini' %>
+            <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                        salary_record_path(s),
+                        :method => :delete,
+                        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                        :class => 'btn' %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
+<ul class="pager">
+  <li class="previous"><%=link_to 'Previous Month', '/salaries/'+@date.prev_month.month.to_s + "/" + @date.prev_month.year.to_s %></li>
+  <li class="next"><%=link_to 'Next Month', '/salaries/'+@date.next_month.month.to_s + "/" + @date.next_month.year.to_s %></li>
+</ul>

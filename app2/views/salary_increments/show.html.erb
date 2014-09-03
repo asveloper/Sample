@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @salary_increment.employee_id %>
+</p>
+
+<p>
+  <strong>Date:</strong>
+  <%= @salary_increment.date %>
+</p>
+
+<p>
+  <strong>Amount:</strong>
+  <%= @salary_increment.amount %>
+</p>
+
+<p>
+  <strong>Incremented salary:</strong>
+  <%= @salary_increment.incremented_salary %>
+</p>
+
+<p>
+  <strong>Comments:</strong>
+  <%= @salary_increment.comments %>
+</p>
+
+<%= link_to 'Edit', edit_salary_increment_path(@salary_increment) %> |
+<%= link_to 'Back', salary_increments_path %>

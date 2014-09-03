@@ -1,0 +1,35 @@
+<h1>Listing salary_increments</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Date</th>
+      <th>Amount</th>
+      <th>Incremented salary</th>
+      <th>Comments</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @salary_increments.each do |salary_increment| %>
+      <tr>
+        <td><%= salary_increment.employee_id %></td>
+        <td><%= salary_increment.date %></td>
+        <td><%= salary_increment.amount %></td>
+        <td><%= salary_increment.incremented_salary %></td>
+        <td><%= salary_increment.comments %></td>
+        <td><%= link_to 'Show', salary_increment %></td>
+        <td><%= link_to 'Edit', edit_salary_increment_path(salary_increment) %></td>
+        <td><%= link_to 'Destroy', salary_increment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Salary increment', new_salary_increment_path %>

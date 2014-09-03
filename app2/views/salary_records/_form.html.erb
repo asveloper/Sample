@@ -1,0 +1,58 @@
+<% if @salary_record.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <h2><%= pluralize(@salary_record.errors.count, "error") %> prohibited this salary record from being saved:</h2>
+    <ul>
+    <% @salary_record.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+<%= form_for @salary_record, :html => { :class => 'form-horizontal' } do |f| %>
+  <div class="form-group">
+    <%= f.label :employee_id, :class => 'col-sm-2 control-label' %>
+    <div class="col-sm-4">
+      <%= f.text_field :employee_id, :class=>'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :month, :class => 'col-sm-2 control-label' %>
+    <div class="col-sm-4">
+      <%= f.date_select :month, :class => 'select_field' , :class => "form-control"%>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :salary, :class => 'col-sm-2 control-label' %>
+    <div class="col-sm-4">
+      <%= f.number_field :salary, :class=>'form-control salary_record_salary' %>
+    </div>
+  </div>
+  <% @salary_record.distribution.each do |name, value| %>
+    <div class="form-group">
+      <%= label_tag :q, name.humanize, :class => 'col-sm-2 control-label' %>
+      <div class="col-sm-4">
+        <%= text_field_tag "salary_record[distribution][#{name}]", value , :class => "form-control"%>
+      </div>
+    </div>
+  <% end %>
+  <div class="form-group">
+    <%= f.label :paid_by, :class => 'col-sm-2 control-label' %>
+    <div class="col-sm-4">
+      <%= collection_select(:salary_record, :user_id, User.admins, :id, :email, {prompt: true}, :class => "form-control") %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :comments, :class => 'col-sm-2 control-label' %>
+    <div class="col-sm-4">
+      <%= f.text_area :comments, :class=>'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= f.submit nil, :class => 'btn btn-primary' %>
+      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                '/salaries', :class => 'btn' %>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,90 @@
+<% if @transaction.errors.any? %>
+  <div id="error_explanation" class="alert alert-danger">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <h2><%= pluralize(@transaction.errors.count, "error") %> prohibited this transaction from being saved:</h2>
+    <ul>
+    <% @transaction.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+<%= form_for @transaction, :html => { :class => 'form-horizontal' } do |f| %>
+  <div class="form-group">
+    <%= f.label :title, :class => 'col-sm-2 control-label' %>
+    <div class="col-sm-4">
+      <%= f.text_field :title, :class=>'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :transaction_date, :class => 'col-sm-2 control-label' %>
+    <div class="col-sm-4">
+      <%= f.text_field :transaction_date, :value=> Time.now.strftime("%Y/%m/%d"), :class=>'form-control date-field' %>
+    </div>
+  </div>
+  <% if params[:income] %>
+    <%= f.hidden_field :transaction_type, :value => "income"  %>
+  <% else %>
+    <%= f.hidden_field :transaction_type, :value => "expense" %>
+  <% end %>
+  <div class="form-group">
+    <%= f.label :amount, :class => 'col-sm-2 control-label' %>
+    <div class="col-sm-4">
+      <%= f.text_field :amount, :class=>'form-control' %>
+    </div>
+  </div>
+  <% if params[:income] %>
+    <div class="form-group">
+      <%= f.label :project_id, :class => 'col-sm-2 control-label' %>
+      <div class="col-sm-4">
+        <%= collection_select(:transaction, :project_id, Project.all, :id, :title,{prompt: true},:class=>'form-control') %>
+      </div>
+    </div>
+  <% end %>
+  <div class="form-group">
+    <%= f.label :user, :class => 'col-sm-2 control-label' %>
+    <div class="col-sm-4">
+      <%= collection_select(:transaction, :user_id, User.admins, :id, :email,{prompt: true},:class=>'form-control') %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :verified, :class => 'col-sm-2 control-label' %>
+    <div class="col-sm-4">
+      <%= f.text_field :verified, :class=>'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :comments, :class => 'col-sm-2 control-label' %>
+    <div class="col-sm-4">
+      <%= f.text_area :comments, :class=>'form-control' %>
+    </div>
+  </div>
+  <% if params[:income] %>
+    <div class="form-group">
+      <%= f.label :status, :class => 'col-sm-2 control-label' %>
+      <div class="col-sm-4">
+        <%= f.collection_select :status, Transaction::STATUSES, :to_s, :humanize,{} ,:class=>'form-control' %>
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :source, :class => 'col-sm-2 control-label' %>
+      <div class="col-sm-4">
+      <%selected = @transaction.source ? @transaction.source : "Direct"%>
+        <%= f.collection_select :source, Transaction::SOURCES, :to_s, :humanize,{:selected => selected}, :class=>'form-control' %>
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :expected_date, :class => 'col-sm-2 control-label' %>
+      <div class="col-sm-4">
+        <%= f.text_field :expected_date, :class=>'form-control date-field' %>
+      </div>
+    </div>
+  <% end %>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= f.submit nil, :class => 'btn btn-primary' %>
+      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                :back, :class => 'btn' %>
+    </div>
+  </div>
+<% end %>

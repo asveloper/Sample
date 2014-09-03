@@ -1,0 +1,24 @@
+<ul id="answers">
+  <% answers_count = 0 %>
+  <% @question.answers.each do |answer| %>
+    <% answers_count += 1 %>
+    <div class="row">
+      <label for="answers_answer_for_ques_<%= @question.id %>_<%= answer.id %>" class="col-md-12 col-sm-12 col-xs-12">
+        <% @answers = params[:answers].collect(&:last) if params[:answers].present? %>
+        <li class="answer question_<%= @question.id %> <%= selected_answer(@answers, answer.id) %> <%= check_correct_answer(answer) %>">
+          <div class="quiz-title">
+            <div class="pull-left"><%= check_box_tag "answers[answer_for_ques_#{@question.id}]", answer.id, checked=false unless not_show_action? %></div>
+            <div class="pull-left list-grid-width"><%= label_tag "answers[answer_for_ques_#{@question.id}_#{answer.id}]", answer.title %></div>
+          </div>
+          <div class="edit-answer-link">
+          <% if not_show_action? %>
+            <%= link_to '<i class="glyphicon glyphicon-pencil"></i>'.html_safe, "#", :onclick => "bind_new_link(this); return false", "data-href" => edit_polymorphic_path([@questionable,@question,answer], :questionable_id => @question.questionable_id, :questionable_type => @question.questionable_type) %>
+            <span> <%= "Correct Answer" if answer.correct %> </span>
+          <% end %>
+          </div>
+        </li>
+      </label>
+    </div>
+    <div class="clear"></div>
+  <% end %>
+</ul>

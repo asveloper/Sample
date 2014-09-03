@@ -1,0 +1,16 @@
+<div class="row">
+  <ul id="answers">
+    <% question.answers.each_with_index do |answer, ans_index| %>
+      <div class="col-md-4 col-sm-4 col-xs-4">
+      <li class="ans_grid">
+        <%= label_tag "", ans_index+1, :class=>"order"%>
+        <div class="photo_preview grid-photo"><%= display_photo(answer) %></div>
+        <div class="quiz-title"><%= label_tag "", answer.count %></div>
+      </li>
+      </div>
+      <% if ((ans_index+1)%3 == 0 && question.view == "grid") or question.view == "list" %>
+        <div class="clear"></div>
+      <% end %>
+    <% end %>
+  </ul>
+</div>

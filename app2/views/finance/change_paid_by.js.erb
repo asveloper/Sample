@@ -1,0 +1,7 @@
+$(".generate_expense_button").html('<%= raw escape_javascript(render :partial => "generate_expense_button", :locals => {:@date => @date, :@disable => @disable}) %>');
+$(".generate_slips_button").html('<%= raw escape_javascript(render :partial => "generate_slips_button", :locals => {:@date => @date, :@disable => @disable}) %>');
+if (<%=@disable%>) {
+  $('.disabled-generate-expense').click(function(e){
+    e.preventDefault();
+  });
+}

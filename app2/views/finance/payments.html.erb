@@ -1,0 +1,45 @@
+<div class="page-header">
+  <h2>Payments</h2>
+</div>
+<%- model_class = Employee -%>
+
+<div class="row">
+  <div class="balance">
+    <div class="panel panel-primary">
+        <%= raw payments_total_block%>
+    </div>
+  </div>
+</div>
+<table class="table table-striped sort-table">
+  <thead>
+    <tr>
+      <th><%= sortable 'project_name','Project' %></th>
+      <th><%= sortable 'amount','Amount'%></th>
+      <th><%= sortable 'expected_date','Expected Date'%></th>
+      <th><%= sortable 'transaction_date','Payment Date ' %></th>
+      <th><%= sortable 'source','Source'%></th>
+      <th><%= sortable 'status','State '%></th>
+      <th><%= sortable 'comments','Comments'%></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @projects.each do |project| %>
+      <%project.transactions.each do |transaction|
+        if transaction.transaction_type == 'income'
+      %>
+      <tr>
+        <td><%= project.title %></td>
+        <td><%= transaction.amount %></td>
+        <td><%= transaction.expected_date%></td>
+        <td><%= transaction.transaction_date %></td>
+        <td><%= transaction.source %></td>
+        <td><%= transaction.status %></td>
+        <td><%= transaction.comments %></td>
+      </tr>
+    <% end
+      end
+    end %>
+  </tbody>
+</table>
+

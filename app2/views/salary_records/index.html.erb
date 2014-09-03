@@ -1,0 +1,36 @@
+<h1>Listing salary_records</h1>
+<%= link_to 'New Salary record', new_salary_record_path %>
+<table>
+  <thead>
+    <tr>
+      <th>Employee</th>
+      <th>Month</th>
+      <th>Salary</th>
+      <th>Distribution</th>
+      <th>Net salary</th>
+      <th>Comments</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @salary_records.each do |salary_record| %>
+      <tr>
+        <td><%= salary_record.employee %></td>
+        <td><%= salary_record.month %></td>
+        <td><%= salary_record.salary %></td>
+        <td><%= salary_record.distribution %></td>
+        <td><%= salary_record.net_salary %></td>
+        <td><%= salary_record.comments %></td>
+        <td><%= link_to 'Show', salary_record %></td>
+        <td><%= link_to 'Edit', edit_salary_record_path(salary_record) %></td>
+        <td><%= link_to 'Destroy', salary_record, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+

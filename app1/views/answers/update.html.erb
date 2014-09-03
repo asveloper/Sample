@@ -1,0 +1,10 @@
+<div class="questions-container hidden">
+  <%= render :partial => "questions/list" %>
+</div>
+
+<script type="text/javascript">
+  window.onload=function(){
+    window.parent.document.querySelector("#questions_details #questions").innerHTML = $("#questions").html()
+    parent.$.fn.colorbox.close()
+  }
+</script>

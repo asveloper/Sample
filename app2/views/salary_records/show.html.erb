@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Employee:</strong>
+  <%= @salary_record.employee %>
+</p>
+
+<p>
+  <strong>Month:</strong>
+  <%= @salary_record.month %>
+</p>
+
+<p>
+  <strong>Salary:</strong>
+  <%= @salary_record.salary %>
+</p>
+
+<p>
+  <strong>Distribution:</strong>
+  <%= @salary_record.distribution %>
+</p>
+
+<p>
+  <strong>Net salary:</strong>
+  <%= @salary_record.net_salary %>
+</p>
+
+<p>
+  <strong>Comments:</strong>
+  <%= @salary_record.comments %>
+</p>
+
+<%= link_to 'Edit', edit_salary_record_path(@salary_record) %> |
+<%= link_to 'Back', salary_records_path %>
